@@ -553,7 +553,14 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
     player = [[FLTVideoPlayer alloc] initWithAsset:assetPath frameUpdater:frameUpdater];
     return [self onPlayerSetup:player frameUpdater:frameUpdater];
   } else if (input.uri) {
-    player = [[FLTVideoPlayer alloc] initWithURL:[NSURL URLWithString:input.uri]
+    NSURL *uri =  [NSURL URLWithString:input.uri];
+
+        if([input.uri containsString:@"file:"])
+        {
+            uri = [NSURL fileURLWithPath: [input.uri substringFromIndex:6]];
+        }
+
+    player = [[FLTVideoPlayer alloc] initWithURL:uri
                                     frameUpdater:frameUpdater
                                      httpHeaders:input.httpHeaders];
     return [self onPlayerSetup:player frameUpdater:frameUpdater];
